@@ -1,6 +1,6 @@
 package org.example;
 
-import java.io.File;
+import java.io.*;
 import java.util.Scanner;
 
 public class Main {
@@ -21,7 +21,8 @@ public class Main {
         String opcion = "";
         do {
             System.out.print("Elige una opción:\n\t1- Ejemplo 1\n\t2- Diferencia entre:\n\t\t-listRoots()\n\t\t-listFiles()\n\t\t-list()" +
-                    "\n\t3- Visualizar sistema de archivos  directorio actual" +
+                    "\n\t3- Visualizar sistema de archivos  directorio actual\n\t4- Abrir un fichero de texto para escribir una frase" +
+                    "\n\t4- Leer ficheros de texto plano" +
                     "\n\t0- Salir\n==> ");
             opcion = scn.nextLine();
             switch (opcion) {
@@ -34,6 +35,12 @@ public class Main {
                 case "3":
                     ejemplo3();
                     break;
+                case "4":
+                    ejemplo4();
+                    break;
+                case "5":
+                    ejemplo5();
+                    break;
                 case "0":
                     System.out.println("Bye bye.\nNice to see you");
                     break;
@@ -44,8 +51,88 @@ public class Main {
 
     }
 
+    private static void ejemplo5() {
+        System.out.println("Ejemplo 5: La clase FileReader permite procesar ficheros de texto. Algunos de sus métodos:\n" +
+                "       - int read() → lee un caracter y lo devuelve. Si llega al final del fichero devuelve -1.\n" +
+                "       - String readLine() → lee una línea y la devuelve. Si llega al final del fichero devuelve null.\n");
+
+        System.out.println("File fichero = null;\n        \n" +
+                "        try {\n            fichero =  new File(\"./src/main/resources/archivoEjemplo5.txt\");\n" +
+                "            br = new BufferedReader(new FileReader(fichero));\n" +
+                "            String linea = null;\n            while ((linea = br.readLine()) != null) {\n" +
+                "                System.out.println(linea);\n            }\n        } catch (FileNotFoundException e) {\n" +
+                "            e.printStackTrace();\n        } finally {\n            if (br != null) {\n" +
+                "                try {\n                    br.close();\n                } catch (IOException e) {\n" +
+                "                    e.printStackTrace();\n                }\n            }\n        }");
+
+
+        //File fichero = null;
+        BufferedReader br = null;
+
+        try {
+            File fichero =  new File("./src/main/resources/archivoEjemplo4.txt");
+            br = new BufferedReader(new FileReader(fichero));
+            String linea = null;
+            while ((linea = br.readLine()) != null) {
+                System.out.println(linea);
+            }
+        } catch (FileNotFoundException fnfe) {
+            fnfe.printStackTrace();
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+    }
+
+    private static void ejemplo4() {
+        System.out.println("\n>>>   EJEMPLO 4: Abrir un fichero de texto para escribir una frase.");
+        System.out.println("FileWriter fw = null;\n" +
+                "        PrintWriter pw = null;\n" +
+                "        try {\n" +
+                "            fw = new FileWriter(\"./src/main/resources/archivoEjemplo4.txt\");\n" +
+                "            pw = new PrintWriter(fw);\n" +
+                "            pw.println(\"This is a line of the file\");\n" +
+                "        } catch (IOException e) {\n" +
+                "            e.printStackTrace();\n" +
+                "        } finally {\n" +
+                "            if (fw != null){\n" +
+                "                try {\n" +
+                "                    fw.close();\n" +
+                "                } catch (IOException e) {\n" +
+                "                    e.printStackTrace();\n" +
+                "                }\n" +
+                "            }\n" +
+                "        }");
+        FileWriter fw = null;
+        PrintWriter pw = null;
+        try {
+            fw = new FileWriter("./src/main/resources/archivoEjemplo4.txt",true);
+            pw = new PrintWriter(fw);
+            pw.println("This is a line of the file");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (fw != null){
+                try {
+                    fw.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+    }
+
     private static void ejemplo3() {
-        System.out.println("\n>>>   EJEMPLO3: Visualizar el sistema de archivos teniendo en cuenta el directorio actual '.'");
+        System.out.println("\n>>>   EJEMPLO 3: Visualizar el sistema de archivos teniendo en cuenta el directorio actual '.'");
         System.out.println("String dir = \".\";\nFile f = new File(dir);\n" +
                 "String[] archivos = f.list();\n" +
                 "System.out.printf(\"Ficheros en el directorio actual: %d %n\", archivos.length);\n" +
